@@ -5,12 +5,15 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import ScrollSmoother from "gsap/ScrollSmoother";
 import { time } from "three/tsl";
+let introfunyction;
 
 
 gsap.registerPlugin(ScrollTrigger,ScrollSmoother);
 
 ScrollTrigger.defaults({ markers: { startColor: "white", endColor: "white" } });
 const Demoplanet = () => {
+  const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
 //   let smoother = ScrollSmoother.create({
 //   smooth: 1.2,
 //   // effects: false,
@@ -24,123 +27,12 @@ let timel=useRef()
 let psoref=useRef()
 let cameraref=useRef()
 let prgressref=useRef(0)
-useEffect(() => {
-cameraref.current.position.y= (-cu.current.position.clone().z )+1
 
-//  alert(currentplanet)
- console.log(cu.current,"curr",cameraref.current,"i",psoref.current)
+let radius=8
 
-
-gsap.fromTo(cu.current.position,
-    
-    {
-        x:psoref.current[0].x,y:psoref.current[0].y,z:psoref.current[0].z,
-        
-       
-    },
-    {
-    x:1,duration:1,
-    z:10
-    ,scrollTrigger:{
-        scrub:1,
-        trigger:".page1",
-        markers:true,
-        start:"50% 40%",
-        end:"bottom 10%" ,
-    
-      
-    },
-onComplete: ()=>{
-},
-      onUpdate:(ee)=>{
-    //    console.log(progress,"eeeeee")
-
-   
-cameraref.current.position.y= (-cu.current.position.clone().z )+0.5
-
-
-      //  cameraref.current.position.y=-(cu.current.position.z)
-
-
-       
-cameraref.current.updateMatrixWorld()
-cameraref.current.updateMatrix()
-// camera.lookAt(currentplanet.position)
-// camera.position.y=camera.position.y+0.4
-
-   
-
-    }
-  ,onReverseComplete:()=>{
-
-
-// camera.lookAt(currentplanet.position.clone())
-  }
-})
-
-
-gsap.fromTo(cu.current.position,
-    
-    {
-        x:1,
-      
-        z:cu.current.position.clone().z,
-
-
-        
-       
-    },
-    {
-    x:-2,duration:1
-  
-    ,scrollTrigger:{
-        scrub:1,
-        trigger:".page2",
-        markers:{startColor:"yellow",endColor:"white"},
-        start:"50% 40%",
-        end:"bottom 10%" ,
-      
-    },
-onComplete: ()=>{
-},
-      onUpdate:(ee)=>{
-    //    console.log(progress,"eeeeee")
-
-   
-
-
-      //  cameraref.current.position.y=-(cu.current.position.z)
-       
-cameraref.current.updateMatrixWorld()
-cameraref.current.updateMatrix()
-// camera.lookAt(currentplanet.position)
-// camera.position.y=camera.position.y+0.4
-
-   
-
-    }
-  ,onReverseComplete:()=>{
-// camera.position.y=1
-// camera.position.z=6
-// camera.lookAt(currentplanet.position.clone())
-  }
-})
-
-
-
-// if (timel.current) {
-//   console.log(timel,"timel")
-//      let tl=timel.current
-
-
-// tl.to(cu.current.position,{z:7,x:2},1)
-// tl.to(cu.current.position,{x:-2},4)
-// }
- 
-}, [cu.current,cameraref.current,psoref.current,timel.current])
-
-
-
+let planet1pos=new THREE.Vector3(0,0,4)
+let planet2pos=new THREE.Vector3(radius,0,0)
+let planet3pos=new THREE.Vector3(-radius,0,0)
 
 
 
@@ -155,9 +47,10 @@ cameraref.current.updateMatrix()
     let scrolling = false;
     let planetgroup = new THREE.Group();
     // 1. Set up scene, camera, renderer
+    planetgroup.position.y=-1
     const scene = new THREE.Scene();
     scene.add(planetgroup);
-    planetgroup.rotation.x = Math.PI / 2;
+    // planetgroup.rotation.x = Math.PI / 2;
     let i = Math.PI / 2;
     // setInterval(() => {
     // planetgroup.rotation.z+=Math.PI/2
@@ -183,7 +76,7 @@ cameraref.current.updateMatrix()
       mountRef.current.clientWidth,
       mountRef.current.clientHeight
     );
-    renderer.setClearColor("white",0.4)
+    renderer.setClearColor("#041640",1)
 
 // => change it to
 // renderer.setClearColorHex( 0xffffff, 1 );
@@ -193,19 +86,39 @@ cameraref.current.updateMatrix()
     const geometry = new THREE.BoxGeometry();
     const material = new THREE.MeshBasicMaterial({ color: 0x0000ff });
     const cube1 = new THREE.Mesh(geometry, material);
-    // scene.add(cube1);
-    cube1.name = "cube1";
-    
+    scene.add(cube1);
+    cube1.name = "front";
+    cube1.scale.set(2,2,2)
     planets.push(cube1);
     planetgroup.add(cube1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const axesHelper = new THREE.AxesHelper( 50 );
 scene.add( axesHelper );
     ///2
     const geometry2 = new THREE.BoxGeometry();
     const material2 = new THREE.MeshBasicMaterial({ color: "red" });
     const cube2 = new THREE.Mesh(geometry2, material2);
-    // scene.add(cube2);
-    cube2.name = "cube2";
+    scene.add(cube2);
+    cube2.name = "right";
 
     planetgroup.add(cube2);
 
@@ -215,26 +128,18 @@ scene.add( axesHelper );
     const geometry3 = new THREE.BoxGeometry();
     const material3 = new THREE.MeshBasicMaterial({ color: "orange" });
     const cube3 = new THREE.Mesh(geometry3, material3);
-    // scene.add(cube3);
-    cube3.name = "cube3";
+    scene.add(cube3);
+    cube3.name = "left";
 
     planetgroup.add(cube3);
 
     planets.push(cube3);
-    ///4
-    const geometry4 = new THREE.BoxGeometry();
-    const material4 = new THREE.MeshBasicMaterial({ color: "yellow" });
-    const cube4 = new THREE.Mesh(geometry4, material4);
-    // scene.add(cube4);
-    cube4.name = "cube4";
-
-    planets.push(cube4);
-    planetgroup.add(cube4);
+    
 
     // 3. Animation loop
     var clock = new THREE.Clock();
     var time = 0;
-    var radius = 4;
+    // var radius = 6;
     let di1 = new THREE.Vector3();
     let di2 = new THREE.Vector3();
     let di3 = new THREE.Vector3();
@@ -280,20 +185,20 @@ function  addstar(){
   const getRandomParticelPos = (particleCount) => {
   const arr = new Float32Array(particleCount * 3);
   for (let i = 0; i < particleCount; i++) {
-    arr[i] = (Math.random() - 0.5) * 10;
+    arr[i] = (Math.random() - 0.5) * 30;
   }
   return arr;
 };
   geometry.setAttribute(
     "position",
-    new THREE.BufferAttribute(getRandomParticelPos(350), 3)
+    new THREE.BufferAttribute(getRandomParticelPos(3500), 3)
 );
 
 
 
 const material = new THREE.PointsMaterial({
     size: 0.05,
-    color: "red" // remove it if you want white points.
+    color: "white" // remove it if you want white points.
 });
 
 let starmesh=new THREE.Points(geometry,material)
@@ -307,21 +212,130 @@ return starmesh
 // mouse
 let mouseX = 0;
 let mouseY = 0;
-// document.addEventListener("mousemove", (e) => {
-//   mouseX = e.clientX;
-//   mouseY = e.clientY;
-// });
+document.addEventListener("click", (event) => {
+  pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+  pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  raycaster.setFromCamera(pointer, camera);
+
+  if (planets.length > 0) {
+    const intersects = raycaster.intersectObjects(planets);
+
+    for (let i = 0; i < intersects.length; i++) {
+let planet=intersects[i].object
+
+
+if (planet.name=="left" ||  planet.name=="right") {
+  
+  introfunyction()
+}
+     
+    }
+  }
+});
+
 
     let rotate=0
+
+
+//loo
+
+
+cube1.position.copy(planet1pos)
+cube2.position.copy(planet2pos)
+cube3.position.copy(planet3pos)
+
+
+
+function incr(){
+
+
+for (let i = 0; i < planets.length; i++) {
+  
+  const planet = planets[i];
+  console.log(planet.name,"ise ")
+if (planet.position.z==4) {
+  
+  // planet.position.copy(new THREE.Vector3(-4,0,0))
+
+
+gsap.to(planet.position,{
+  x:-radius,duration:0.4,y:0,z:0,onComplete:()=>{
+    planet.name="left"
+  planet.scale.set(1,1,1)
+
+  }
+})
+  
+  
+
+}else if (planet.position.x==radius) {
+  console.log(planet,"ist the left ")
+// planet.position.copy(new THREE.Vector3(0,0,4))
+gsap.to(planet.position,{
+  z:4,duration:0.4,x:0,y:0,onComplete:()=>{
+    planet.name="front"
+  planet.scale.set(2,2,2)
+  }
+
+})
+  
+  
+}else if (planet.position.x==-radius) {
+  console.log(planet,"ist the right ")
+
+  // planet.position.copy(new THREE.Vector3(4,0,0))
+
+  gsap.to(planet.position,{
+  x:radius,duration:0.4,y:0,z:0,
+  onComplete:()=>{
+    planet.name="left"
+  planet.scale.set(1,1,1)
+
+  }
+})
+  
+}
+}
+}
+introfunyction
+=incr;
+
+
+
+
+//lo
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     const animate = () => {
-      
+      let t=clock.getElapsedTime()
+    starmmesh.rotation.x = t * 0.05;
+    starmmesh.rotation.y = t * 0.05;
     
        if (timel.current) {
         timel.current.seek(progrss*timel.current.duration())
     }
-        time = clock.getElapsedTime() * 0.1 * Math.PI;
- starmmesh.rotation.x = time * 0.5;
-    starmmesh.rotation.y = time * 0.5;
+  
+
       requestAnimationFrame(animate);
       // cube1.getWorldDirection(di1)
       // cube2.getWorldDirection(di2)
@@ -329,81 +343,7 @@ let mouseY = 0;
       // cube4.getWorldDirection(di4)
 
       // console.log(di1,"di222",di2,"dii3",di3,"dii4",di4)
-      if (!scrolling) {
-
-        planets.forEach((c, ndx) => {
-          let clonepl = c.clone();
-          c.position.set(
-            Math.cos(  Math.PI * 0.5 * ndx) * radius,
-            Math.sin(rotate + Math.PI * 0.5 * ndx) * radius,
-     0
-          );
   
-        //   console.log("cooo", c.position, "And", c.name);
-          if (c.position.x > radius - 0.1) {
-           
-
-          }
-          if (c.position.y == radius) {
-            // console.log("cccpposoosos",c.name)
-       c.rotation.z+=0.001
-            currentplanet = c;
-            cu.current=c;
-  pso[0]=c.position.clone()
-  // -(cu.current.position.z)
-  camera.position.setY(-(c.position.z-0.5))
-          }
-        });
-      }
-
-      if (currentplanet  && scrolling) {
-
-if (pso.length>0) 
-
-    {
-
-
-
-        let progress;
-
-
-
-
-    }
-
-
-      
-//         gsap.to(currentplanet.position, {
-//           x: 1,
-//           z: 8,
-//      duration:1.5,
-//           scrollTrigger: {
-//             trigger: ".page1",
-//             scroller: "body",
-//             start:"top center",end:" center end",
-//             markers: true,
-//             scrub:2,
-//        onUpdate:()=>{
-
-       
-// // camera.position.x = currentplanet.position.x;
-// //     camera.position.y = currentplanet.position.y + 2; // Adjust for desired camera height
-// //     camera.position.z = currentplanet.position.z + 5; // Adjust for desired camera distance
-//     // Optionally, update the camera's lookAt target
-//     // camera.lookAt(currentplanet.position);
-// camera.position.y=-currentplanet.position.z
-
-//         // console.log(currentplanet.position,"ppooi")
-//        }
-//           }
-//         });
-
-
-
-
-
-
-}
 
       if (currentplanet) {
     
@@ -452,3 +392,6 @@ if (pso.length>0)
 };
 
 export default Demoplanet;
+
+let exportinro=()=>introfunyction
+export {exportinro}

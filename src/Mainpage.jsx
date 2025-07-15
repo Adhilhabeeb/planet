@@ -1,6 +1,9 @@
 import React from 'react'
+import { exportinro } from './Demoplan'
 
 function Mainpage() {
+
+
   return (
     <div className='mai'>
 
