@@ -282,7 +282,7 @@ gsap.to(planet.position,{
   
   
 }else if (planet.position.x==-radius) {
-  console.log(planet,"ist the right ")
+  console.log(planet,"ist the right  cu")
 
   // planet.position.copy(new THREE.Vector3(4,0,0))
 
