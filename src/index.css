@@ -1,0 +1,93 @@
+
+@font-face {
+  font-family: "cooper";
+  src: url();
+}
+
+
+canvas{
+z-index: -1;
+position: fixed;
+top: 0;left: 0;
+}
+
+html{
+  scroll-behavior: smooth;
+}
+.mai{
+  width: 100%;
+  /* position: absolute;
+  top: 0; */
+  z-index: 1;
+  background-color: rgba(255, 0, 0, 0);
+  left: 0;
+
+}html, body {
+  height: 300vh; /* 3x viewport height */
+  margin: 0;
+}
+
+
+/* //.page1 */
+
+.page1 p{
+font-size: larger;
+font-weight: bold;
+font-style: oblique;
+
+}
+.page1  p:nth-child(1){
+position: absolute;
+top: 10%;
+left: 50%;
+transform: translate(-50%,-4%);
+font-size: x-large;
+}
+.cla  p:nth-child(3){
+
+color: rgb(204, 0, 255);
+}
+
+.page1 h1{
+
+  font-style:inherit;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+font-size: 100px;
+}
+.page1 h1::after{
+  content: "Its Our PLanet";
+  width: 11rem;
+  font-size: medium;
+text-align: center;
+font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  display: block;
+padding: 10px 0 0 0 ;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 30px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  display: block;
+  background-color: rgb(255, 255, 255);
+  height: 50px;
+}
+.page1{
+  width: 100%;
+  text-align: center;
+  height: 100vh;
+}
+
+
+/* page1 */
+
+
+
+
+.page2{
+  width: 100%;
+  height: 100vh;
+}
+.page3{
+  width: 100%;
+  height: 100vh;
+}
