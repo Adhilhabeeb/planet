@@ -22,7 +22,7 @@ function Mainpage() {
 
 
         </div>
-        <div className="page3"></div>
+        <div className="page2"></div>
         <div className="page3"></div>
 
     </div>

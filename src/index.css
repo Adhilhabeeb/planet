@@ -23,7 +23,7 @@ html{
   left: 0;
 
 }html, body {
-  height: 300vh; /* 3x viewport height */
+  /* height: 300vh; 3x viewport height */
   margin: 0;
 }
 
