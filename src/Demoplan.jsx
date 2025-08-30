@@ -19,8 +19,11 @@ const pointer = new THREE.Vector2();
 //   // effects: false,
 //   // normalizeScroll: true
 // });
+const cameraDirection = new THREE.Vector3();
+   let scrolling = false;
   const mountRef = useRef(null);
-  let currentplanet;
+  let currentplanet=useRef();
+  console.log(currentplanet.current,"itann pllannnnnd")
   let animationstill=useRef(false)
   let scrolypos;
   let cu=useRef()
@@ -34,8 +37,77 @@ let radius=8
 let planet1pos=new THREE.Vector3(0,0,4)
 let planet2pos=new THREE.Vector3(radius,0,0)
 let planet3pos=new THREE.Vector3(-radius,0,0)
+timel.current=gsap.timeline({defaults:{duration:2,ease:"power1",onUpdate:()=>{
+  cameraref.current.lookAt(currentplanet.current.position.clone())
+}}})
+window.addEventListener("scroll", (evv) => {
+  scrolling=true
+  
+  
+      });
+      window.addEventListener("scrollend", (evv) => {
+        scrolling=false
+        
+        
+            }
+            ,{passive:true}
+            );
+          
+function animationelemntf(element) {
+  let ani0ypo=-8
+  let ani3ypo=-12
+  let ani6ypo=-17
+  timel.current.clear()
+        element.material.color=new THREE.Color("red")
+console.log(cameraDirection,"cameradirection")
+currentplanet.current=element
+console.log(currentplanet.current,"itann pllannnnnd",scrolling,cameraref.current)
+timel.current.fromTo(currentplanet.current.position,{
+  x:0,y:0,z:4
+},{
+  y:ani0ypo,duration:3,x:4,z:-1
+},0)
+  
+
+timel.current.to(cameraref.current.position,{
+  y:ani0ypo,duration:3,x:1,
+},0)
 
 
+//3
+
+timel.current.to(currentplanet.current.position,{
+  y:ani3ypo,duration:3,x:-4,z:0
+},3)
+
+timel.current.to(cameraref.current.position,{
+  y:ani3ypo,duration:3
+},3)
+
+//3
+
+//6
+timel.current.to(currentplanet.current.scale,{
+x:8.5,y:8.5,z:8.5,duration:3
+},6)
+timel.current.to(currentplanet.current.position,{
+  y:ani6ypo,duration:3,x:-1,z:0,
+
+
+  },6)
+  
+  timel.current.to(cameraref.current.position, {
+    y: -7,
+    x: -1,
+    duration: 3,
+ 
+  }, 6)
+  
+//6
+
+  
+
+}
 
   useLayoutEffect(() => {
     
@@ -45,7 +117,7 @@ let planet3pos=new THREE.Vector3(-radius,0,0)
 
 
 
-    let scrolling = false;
+ 
     let planetgroup = new THREE.Group();
     // 1. Set up scene, camera, renderer
     planetgroup.position.y=-1
@@ -65,6 +137,7 @@ let planet3pos=new THREE.Vector3(-radius,0,0)
       0.1,
       1000
     );
+    camera.getWorldDirection(cameraDirection);
     cameraref.current=camera
     camera.position.z = 6;
 // camera.position.y=2
@@ -93,7 +166,9 @@ let planet3pos=new THREE.Vector3(-radius,0,0)
     planets.push(cube1);
     planetgroup.add(cube1);
 
+////////.....
 
+////..
 
 
 
@@ -148,10 +223,9 @@ scene.add( axesHelper );
 
 
     //
-  timel.current=gsap.timeline({defaults:{duration:2,ease:"power1",onUpdate:()=>{ 
-  // currentplanet.position.lerp(currentplanet.position,0.2)
-    
-    camera.position.y=-(currentplanet.position.z)}}})
+
+
+
 
         ScrollTrigger.create({
       trigger:".mai",
@@ -164,16 +238,12 @@ scene.add( axesHelper );
       onUpdate:(se)=>{
 
         progrss=se.progress
-        console.log(se.progress,"oooooooo")
+        // console.log(se.progress,"oooooooo")
       }
       ,animation:timel.current
     })
 
-    window.addEventListener("scroll", (evv) => {
-scrolling=true
 
-
-    });
 
     let pso=[]
    psoref.current=pso;
@@ -280,6 +350,8 @@ animationstill.current=false
 gsap.to(planet.position,{
   z:4,duration:0.4,x:0,y:0,onComplete:()=>{
     planet.name="front"
+ animationelemntf(planet)
+
   planet.scale.set(2,2,2)
   }
 
@@ -336,7 +408,10 @@ introfunyction
       scene.traverse(plane=>{
        
         if (plane.isMesh && plane.name=="front") {
-        plane.material.color=new THREE.Color("green")
+
+
+
+
         }else if (plane.isMesh && plane.name=="left") {
           plane.material.color=new THREE.Color("yellow")
         }  else if (plane.isMesh && plane.name=="right") {
@@ -363,7 +438,7 @@ introfunyction
       // console.log(di1,"di222",di2,"dii3",di3,"dii4",di4)
   
 
-      if (currentplanet) {
+      // if (currentplanet) {
     
 
 
@@ -374,9 +449,9 @@ introfunyction
 
 
 
-        // console.log(currentplanet.name, "currentpla");
-        // camera.lookAt(currentplanet.position.clone())
-      }
+      //   // console.log(currentplanet.name, "currentpla");
+      //   // camera.lookAt(currentplanet.position.clone())
+      // }
 
       renderer.render(scene, camera);
     };
@@ -413,3 +488,32 @@ export default Demoplanet;
 
 let exportinro=()=>introfunyction
 export {exportinro}
+
+
+
+// let page2camani=gsap.timeline({defaults: { duration: 2, ease: "power1" }});
+// page2camani.to(camera.position, {
+//  onUpdate:()=>{
+//  camera.lookAt(cube1.position.clone())
+//  },
+//   y: 5,
+
+// },0)
+// let scaleg=5
+// page2camani.to(cube1.scale, {
+// x:scaleg,y:scaleg,z:scaleg
+
+//  },0)
+
+// ScrollTrigger.create({
+//   trigger:".page2",
+//     start:"top top",
+//     end:"bottom top",
+//  scroller:"body",
+//     scrub: 0.3, // smooth scroll linking,
+//     markers: { startColor: "white", endColor: "yellow" },
+//    onUpdate:(se) => {
+ 
+//     // page2camani.seek(se.progress*page2camani.duration())
+//    },animation:page2camani
+// })
