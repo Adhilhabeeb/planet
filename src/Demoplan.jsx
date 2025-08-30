@@ -21,6 +21,7 @@ const pointer = new THREE.Vector2();
 // });
   const mountRef = useRef(null);
   let currentplanet;
+  let animationstill=useRef(false)
   let scrolypos;
   let cu=useRef()
 let timel=useRef()
@@ -152,21 +153,21 @@ scene.add( axesHelper );
     
     camera.position.y=-(currentplanet.position.z)}}})
 
-    //     ScrollTrigger.create({
-    //   trigger:".mai",
-    //   scroller:"body",
-    //   start:"top top",
-    //   end:"bottom bottom",
-    // scrub: 0.3, // smooth scroll linking,
+        ScrollTrigger.create({
+      trigger:".mai",
+      scroller:"body",
+      start:"top top",
+      end:"bottom bottom",
+    scrub: 0.3, // smooth scroll linking,
 
-    //   markers:{startColor:"white",endColor:"yellow"},
-    //   onUpdate:(se)=>{
+      markers:{startColor:"white",endColor:"yellow"},
+      onUpdate:(se)=>{
 
-    //     progrss=se.progress
-    //     console.log(se.progress,"oooooooo")
-    //   }
-    //   ,animation:timel.current
-    // })
+        progrss=se.progress
+        console.log(se.progress,"oooooooo")
+      }
+      ,animation:timel.current
+    })
 
     window.addEventListener("scroll", (evv) => {
 scrolling=true
@@ -263,6 +264,10 @@ gsap.to(planet.position,{
   x:-radius,duration:0.4,y:0,z:0,onComplete:()=>{
     planet.name="left"
   planet.scale.set(1,1,1)
+animationstill.current=false
+  },
+  onStart:()=>{
+    animationstill.current=true
 
   }
 })
@@ -327,6 +332,18 @@ introfunyction
 
 
     const animate = () => {
+    
+      scene.traverse(plane=>{
+       
+        if (plane.isMesh && plane.name=="front") {
+        plane.material.color=new THREE.Color("green")
+        }else if (plane.isMesh && plane.name=="left") {
+          plane.material.color=new THREE.Color("yellow")
+        }  else if (plane.isMesh && plane.name=="right") {
+          plane.material.color=new THREE.Color("red")
+          
+        }
+      })
       let t=clock.getElapsedTime()
     starmmesh.rotation.x = t * 0.05;
     starmmesh.rotation.y = t * 0.05;
@@ -334,6 +351,7 @@ introfunyction
        if (timel.current) {
         timel.current.seek(progrss*timel.current.duration())
     }
+  
   
 
       requestAnimationFrame(animate);
